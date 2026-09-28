@@ -1,18 +1,18 @@
 describe('Login Functionality', () => {
 
-  beforeEach(() => {
+ beforeEach(() => {
   cy.visit('https://www.saucedemo.com/')
 })
 
   it('should login successfully with valid credentials', () => {
 
-    cy.get('[data-test="username"]')
+    cy.get('[id="user-name"]')
       .type('standard_user')
 
-    cy.get('[data-test="password"]')
+    cy.get('[id="password"]')
       .type('secret_sauce')
 
-    cy.get('[data-test="login-button"]')
+    cy.get('[id="login-button"]')
       .click()
 
     cy.url()
@@ -20,18 +20,16 @@ describe('Login Functionality', () => {
 
   })
 
-})
-
 
 it('should display an error message with invalid password', () => {
 
-  cy.get('[data-test="username"]')
+  cy.get('[id="user-name"]')
     .type('standard_user')
 
-  cy.get('[data-test="password"]')
+  cy.get('[id="password"]')
     .type('wrong_password')
 
-  cy.get('[data-test="login-button"]')
+  cy.get('[id="login-button"]')
     .click()
 
   cy.get('[data-test="error"]')
@@ -41,28 +39,30 @@ it('should display an error message with invalid password', () => {
 
 it('should display an error when username is empty', () => {
 
-  cy.get('[data-test="password"]')
+  cy.get('[id="password"]')
     .type('secret_sauce')
 
-  cy.get('[data-test="login-button"]')
+  cy.get('[id="login-button"]')
     .click()
 
   cy.get('[data-test="error"]')
     .should('be.visible')
-    .and('contain', 'Username and password do not match')
+    .and('contain', ' Username is required')
 
 })
 
 it('should display an error when password is empty', () => {
 
-  cy.get('[data-test="username"]')
+  cy.get('[id="user-name"]')
     .type('standard_user')
 
-  cy.get('[data-test="login-button"]')
+  cy.get('[id="login-button"]')
     .click()
 
   cy.get('[data-test="error"]')
     .should('be.visible')
-    .and('contain', 'Username and password do not match')
+    .and('contain', 'Password is required')
+  })
 
 })
+

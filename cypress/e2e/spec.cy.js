@@ -1,16 +1,25 @@
 describe('Login Functionality', () => {
 
- beforeEach(() => {
-  cy.visit('https://www.saucedemo.com/')
-})
+  let loginData
+
+  beforeEach(() => {
+
+    cy.fixture('loginData').then((data) => {
+      loginData = data
+    })
+
+    cy.visit('https://www.saucedemo.com/')
+
+  })
+
 
   it('should login successfully with valid credentials', () => {
 
     cy.get('[id="user-name"]')
-      .type('standard_user')
+      .type(loginData.validUsername)
 
     cy.get('[id="password"]')
-      .type('secret_sauce')
+      .type(loginData.validPassword)
 
     cy.get('[id="login-button"]')
       .click()
@@ -21,48 +30,51 @@ describe('Login Functionality', () => {
   })
 
 
-it('should display an error message with invalid password', () => {
+  it('should display an error message with invalid password', () => {
 
-  cy.get('[id="user-name"]')
-    .type('standard_user')
+    cy.get('[id="user-name"]')
+      .type(loginData.validUsername)
 
-  cy.get('[id="password"]')
-    .type('wrong_password')
+    cy.get('[id="password"]')
+      .type(loginData.invalidPassword)
 
-  cy.get('[id="login-button"]')
-    .click()
+    cy.get('[id="login-button"]')
+      .click()
 
-  cy.get('[data-test="error"]')
-    .should('be.visible')
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Username and password do not match')
 
-})
+  })
 
-it('should display an error when username is empty', () => {
 
-  cy.get('[id="password"]')
-    .type('secret_sauce')
+  it('should display an error when username is empty', () => {
 
-  cy.get('[id="login-button"]')
-    .click()
+    cy.get('[id="password"]')
+      .type(loginData.validPassword)
 
-  cy.get('[data-test="error"]')
-    .should('be.visible')
-    .and('contain', ' Username is required')
+    cy.get('[id="login-button"]')
+      .click()
 
-})
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Username is required')
 
-it('should display an error when password is empty', () => {
+  })
 
-  cy.get('[id="user-name"]')
-    .type('standard_user')
 
-  cy.get('[id="login-button"]')
-    .click()
+  it('should display an error when password is empty', () => {
 
-  cy.get('[data-test="error"]')
-    .should('be.visible')
-    .and('contain', 'Password is required')
+    cy.get('[id="user-name"]')
+      .type(loginData.validUsername)
+
+    cy.get('[id="login-button"]')
+      .click()
+
+    cy.get('[data-test="error"]')
+      .should('be.visible')
+      .and('contain', 'Password is required')
+
   })
 
 })
-

@@ -15,14 +15,10 @@ describe('Login Functionality', () => {
 
   it('should login successfully with valid credentials', () => {
 
-    cy.get('[id="user-name"]')
-      .type(loginData.validUsername)
-
-    cy.get('[id="password"]')
-      .type(loginData.validPassword)
-
-    cy.get('[id="login-button"]')
-      .click()
+    cy.login(
+      loginData.validUsername,
+      loginData.validPassword
+    )
 
     cy.url()
       .should('include', '/inventory.html')
@@ -32,14 +28,10 @@ describe('Login Functionality', () => {
 
   it('should display an error message with invalid password', () => {
 
-    cy.get('[id="user-name"]')
-      .type(loginData.validUsername)
-
-    cy.get('[id="password"]')
-      .type(loginData.invalidPassword)
-
-    cy.get('[id="login-button"]')
-      .click()
+    cy.login(
+      loginData.validUsername,
+      loginData.invalidPassword
+    )
 
     cy.get('[data-test="error"]')
       .should('be.visible')
